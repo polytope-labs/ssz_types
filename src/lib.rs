@@ -50,6 +50,7 @@ pub mod length {
 #[macro_use]
 mod fixed_vector;
 mod tree_hash;
+mod progressive_list;
 mod variable_list;
 
 #[cfg(feature = "context_deserialize")]
@@ -58,6 +59,7 @@ mod context_deserialize;
 pub use fixed_vector::FixedVector;
 pub use ssz::{BitList, BitVector, Bitfield};
 pub use typenum;
+pub use progressive_list::{progressive_vec_tree_hash_root, ProgressiveList};
 pub use variable_list::VariableList;
 
 #[cfg(feature = "runtime_types")]
