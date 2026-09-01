@@ -51,6 +51,8 @@ pub mod length {
 mod fixed_vector;
 mod tree_hash;
 mod progressive_list;
+#[cfg(feature = "scale")]
+mod scale;
 mod variable_list;
 
 #[cfg(feature = "context_deserialize")]
