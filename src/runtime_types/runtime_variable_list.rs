@@ -1,11 +1,12 @@
+use alloc::{format, string::{String, ToString}, vec, vec::Vec};
 use crate::Error;
 use educe::Educe;
 use serde::{Deserialize, Serialize};
 use ssz::Decode;
-use std::fmt;
-use std::fmt::Debug;
-use std::ops::{Deref, Index, IndexMut};
-use std::slice::SliceIndex;
+use core::fmt;
+use core::fmt::Debug;
+use core::ops::{Deref, Index, IndexMut};
+use core::slice::SliceIndex;
 use tree_hash::{Hash256, MerkleHasher, PackedEncoding, TreeHash, TreeHashType};
 
 /// Emulates a SSZ `List`.
@@ -43,7 +44,7 @@ use tree_hash::{Hash256, MerkleHasher, PackedEncoding, TreeHash, TreeHashType};
 ///
 /// ```
 #[derive(Clone, Serialize, Deserialize, Educe)]
-#[educe(PartialEq, Eq, Hash(bound = "T: std::hash::Hash"))]
+#[educe(PartialEq, Eq, Hash(bound = "T: core::hash::Hash"))]
 #[serde(transparent)]
 pub struct RuntimeVariableList<T> {
     vec: Vec<T>,
@@ -183,7 +184,7 @@ impl<T> Deref for RuntimeVariableList<T> {
 
 impl<'a, T> IntoIterator for &'a RuntimeVariableList<T> {
     type Item = &'a T;
-    type IntoIter = std::slice::Iter<'a, T>;
+    type IntoIter = core::slice::Iter<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.iter()
@@ -192,7 +193,7 @@ impl<'a, T> IntoIterator for &'a RuntimeVariableList<T> {
 
 impl<T> IntoIterator for RuntimeVariableList<T> {
     type Item = T;
-    type IntoIter = std::vec::IntoIter<T>;
+    type IntoIter = alloc::vec::IntoIter<T>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.vec.into_iter()
@@ -280,7 +281,7 @@ where
 mod test {
     use super::*;
     use ssz::*;
-    use std::fmt::Debug;
+    use core::fmt::Debug;
 
     #[test]
     fn new() {
