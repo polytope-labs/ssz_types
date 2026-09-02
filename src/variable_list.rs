@@ -190,6 +190,12 @@ impl<T, N: Unsigned, I: SliceIndex<[T]>> IndexMut<I> for VariableList<T, N> {
     }
 }
 
+impl<T, N: Unsigned> AsRef<[T]> for VariableList<T, N> {
+    fn as_ref(&self) -> &[T] {
+        &self.vec
+    }
+}
+
 impl<T, N: Unsigned> Deref for VariableList<T, N> {
     type Target = [T];
 

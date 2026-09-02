@@ -158,6 +158,12 @@ impl<T, N: Unsigned, I: SliceIndex<[T]>> IndexMut<I> for FixedVector<T, N> {
     }
 }
 
+impl<T, N: Unsigned> AsRef<[T]> for FixedVector<T, N> {
+    fn as_ref(&self) -> &[T] {
+        &self.vec
+    }
+}
+
 impl<T, N: Unsigned> Deref for FixedVector<T, N> {
     type Target = [T];
 
