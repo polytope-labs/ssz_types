@@ -45,9 +45,9 @@ harness = false
 name = "encode_decode"
 
 [patch.crates-io]
-tree_hash = { git = "https://github.com/polytope-labs/tree_hash", rev = "cf99897c1be55eb960eac792c4b51b72f0b92cf1" }
-tree_hash_derive = { git = "https://github.com/polytope-labs/tree_hash", rev = "cf99897c1be55eb960eac792c4b51b72f0b92cf1" }
-ethereum_ssz = { git = "https://github.com/polytope-labs/ethereum_ssz", rev = "928df8a3ed99360bbc18c604e89bf319a9e33e55" }
-ethereum_ssz_derive = { git = "https://github.com/polytope-labs/ethereum_ssz", rev = "928df8a3ed99360bbc18c604e89bf319a9e33e55" }
-ethereum_serde_utils = { git = "https://github.com/polytope-labs/ethereum_serde_utils", rev = "6f4ab738574da2e3a0204bb6d2521c14faee5b32" }
+tree_hash = { git = "https://github.com/polytope-labs/tree_hash", rev = "e5e945efd51e691efc86cc3998a6d16ad0754acf" }
+tree_hash_derive = { git = "https://github.com/polytope-labs/tree_hash", rev = "e5e945efd51e691efc86cc3998a6d16ad0754acf" }
+ethereum_ssz = { git = "https://github.com/polytope-labs/ethereum_ssz", rev = "8658e3af0b448a4c90f47702616b0e78a696bb18" }
+ethereum_ssz_derive = { git = "https://github.com/polytope-labs/ethereum_ssz", rev = "8658e3af0b448a4c90f47702616b0e78a696bb18" }
+ethereum_serde_utils = { git = "https://github.com/polytope-labs/ethereum_serde_utils", rev = "5d953c2f15b1f52c67529b117b4878d946f9295d" }
 ethereum_hashing = { git = "https://github.com/polytope-labs/ethereum_hashing", rev = "30d2638547ce44cac0cdea44db32e9247d227a4a" }
