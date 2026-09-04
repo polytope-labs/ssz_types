@@ -1,10 +1,5 @@
 use crate::Error;
-use alloc::{
-    format,
-    string::{String, ToString},
-    vec,
-    vec::Vec,
-};
+use alloc::{format, vec, vec::Vec};
 use core::fmt;
 use core::fmt::Debug;
 use core::ops::{Deref, Index, IndexMut};
