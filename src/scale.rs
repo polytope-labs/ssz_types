@@ -63,6 +63,14 @@ impl<T: Decode> Decode for ProgressiveList<T> {
     }
 }
 
+// `EncodeLike` says "this encodes identically to T", which is what the Substrate storage APIs ask
+// for when they take a value by reference. Without it these types can only be passed by value into
+// `StorageValue::put` and friends. Each impl below is sound because the encoding is exactly the
+// inner `Vec<T>`'s, which is what the blanket `EncodeLike for T` on the same type would give.
+impl<T: Encode, N: Unsigned> codec::EncodeLike for FixedVector<T, N> {}
+impl<T: Encode, N: Unsigned> codec::EncodeLike for VariableList<T, N> {}
+impl<T: Encode> codec::EncodeLike for ProgressiveList<T> {}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -88,6 +96,31 @@ mod tests {
         assert_eq!(
             ProgressiveList::from(values.clone()).encode(),
             values.encode()
+        );
+    }
+
+    /// `EncodeLike` is only useful if a generic bound accepting it actually resolves, so this
+    /// exercises the bound the storage APIs impose: `StorageValue::<T>::put` takes an
+    /// `EncodeLike<T>`, and a `&T` satisfies that through codec's blanket impl only when `T`
+    /// itself is `EncodeLike<T>`. Passing by reference is the case the review flagged.
+    #[test]
+    fn collections_can_be_passed_by_reference() {
+        fn put<T: Encode, E: codec::EncodeLike<T>>(value: E) -> Vec<u8> {
+            value.encode()
+        }
+
+        let values: Vec<u64> = (0..4).collect();
+
+        let fixed = FixedVector::<u64, U4>::new(values.clone()).unwrap();
+        assert_eq!(put::<FixedVector<u64, U4>, _>(&fixed), fixed.encode());
+
+        let list = VariableList::<u64, U8>::new(values.clone()).unwrap();
+        assert_eq!(put::<VariableList<u64, U8>, _>(&list), list.encode());
+
+        let progressive = ProgressiveList::from(values);
+        assert_eq!(
+            put::<ProgressiveList<u64>, _>(&progressive),
+            progressive.encode()
         );
     }
 
