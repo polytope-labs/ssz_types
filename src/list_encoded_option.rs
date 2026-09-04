@@ -1,10 +1,10 @@
-use alloc::vec::Vec;
 use crate::tree_hash::vec_tree_hash_root;
 use crate::VariableList;
+use alloc::vec::Vec;
+use core::ops::{Deref, DerefMut};
 use serde_derive::{Deserialize, Serialize};
 use smallvec::SmallVec;
 use ssz::{Decode, DecodeError, Encode};
-use core::ops::{Deref, DerefMut};
 use tree_hash::{Hash256, PackedEncoding, TreeHash, TreeHashType};
 use typenum::U1;
 

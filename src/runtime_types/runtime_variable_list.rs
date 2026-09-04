@@ -1,12 +1,17 @@
-use alloc::{format, string::{String, ToString}, vec, vec::Vec};
 use crate::Error;
-use educe::Educe;
-use serde::{Deserialize, Serialize};
-use ssz::Decode;
+use alloc::{
+    format,
+    string::{String, ToString},
+    vec,
+    vec::Vec,
+};
 use core::fmt;
 use core::fmt::Debug;
 use core::ops::{Deref, Index, IndexMut};
 use core::slice::SliceIndex;
+use educe::Educe;
+use serde::{Deserialize, Serialize};
+use ssz::Decode;
 use tree_hash::{Hash256, MerkleHasher, PackedEncoding, TreeHash, TreeHashType};
 
 /// Emulates a SSZ `List`.
@@ -280,8 +285,8 @@ where
 #[cfg(test)]
 mod test {
     use super::*;
-    use ssz::*;
     use core::fmt::Debug;
+    use ssz::*;
 
     #[test]
     fn new() {

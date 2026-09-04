@@ -1,13 +1,13 @@
-use alloc::{format, vec, vec::Vec};
 use crate::tree_hash::vec_tree_hash_root;
 use crate::Error;
-use serde::Deserialize;
-use serde_derive::Serialize;
+use alloc::{format, vec, vec::Vec};
 use core::any::TypeId;
 use core::marker::PhantomData;
 use core::mem;
 use core::ops::{Deref, DerefMut, Index, IndexMut};
 use core::slice::SliceIndex;
+use serde::Deserialize;
+use serde_derive::Serialize;
 use tree_hash::Hash256;
 use typenum::Unsigned;
 
@@ -678,7 +678,6 @@ mod test {
 
     #[test]
     fn large_list_pre_allocation() {
-        use core::iter;
         use typenum::U1099511627776;
 
         // Iterator that hints the upper bound on its length as `hint`.
@@ -706,7 +705,7 @@ mod test {
         type N = U1099511627776;
         type List = VariableList<u64, N>;
 
-        let iter = iter::repeat(1).take(5);
+        let iter = core::iter::repeat_n(1, 5);
         let wonky_iter = WonkyIterator {
             hint: N::to_usize() / 2,
             iter: iter.clone(),
@@ -759,6 +758,7 @@ mod test {
 
     // This tests the `From<Infallible>` impl for `Error`.
     #[test]
+    #[allow(clippy::unnecessary_fallible_conversions)] // the fallible path is what is under test
     fn error_from_infallible() {
         let result: Result<Vec<u64>, Error> =
             Vec::try_from(VariableList::<u64, U5>::repeat_full(6)).map_err(Into::into);

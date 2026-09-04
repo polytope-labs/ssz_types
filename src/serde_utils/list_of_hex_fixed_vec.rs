@@ -1,8 +1,8 @@
 //! Serialize `VariableList<FixedVector<u8, M>, N>` as list of 0x-prefixed hex string.
-use alloc::format;
 use crate::{FixedVector, VariableList};
-use serde::{ser::SerializeSeq, Deserialize, Deserializer, Serialize, Serializer};
+use alloc::format;
 use core::marker::PhantomData;
+use serde::{ser::SerializeSeq, Deserialize, Deserializer, Serialize, Serializer};
 use typenum::Unsigned;
 
 #[derive(Deserialize)]

@@ -74,14 +74,21 @@ mod tests {
 
         // Matching `ssz-rs`, which encoded the inner `Vec` directly. Existing proofs depend on it.
         assert_eq!(
-            FixedVector::<u64, U4>::new(values.clone()).unwrap().encode(),
+            FixedVector::<u64, U4>::new(values.clone())
+                .unwrap()
+                .encode(),
             values.encode()
         );
         assert_eq!(
-            VariableList::<u64, U8>::new(values.clone()).unwrap().encode(),
+            VariableList::<u64, U8>::new(values.clone())
+                .unwrap()
+                .encode(),
             values.encode()
         );
-        assert_eq!(ProgressiveList::from(values.clone()).encode(), values.encode());
+        assert_eq!(
+            ProgressiveList::from(values.clone()).encode(),
+            values.encode()
+        );
     }
 
     #[test]
@@ -89,10 +96,16 @@ mod tests {
         let values: Vec<u64> = (0..4).collect();
 
         let fixed = FixedVector::<u64, U4>::new(values.clone()).unwrap();
-        assert_eq!(FixedVector::<u64, U4>::decode(&mut &fixed.encode()[..]).unwrap(), fixed);
+        assert_eq!(
+            FixedVector::<u64, U4>::decode(&mut &fixed.encode()[..]).unwrap(),
+            fixed
+        );
 
         let list = VariableList::<u64, U8>::new(values.clone()).unwrap();
-        assert_eq!(VariableList::<u64, U8>::decode(&mut &list.encode()[..]).unwrap(), list);
+        assert_eq!(
+            VariableList::<u64, U8>::decode(&mut &list.encode()[..]).unwrap(),
+            list
+        );
 
         let progressive = ProgressiveList::from(values);
         assert_eq!(
@@ -127,11 +140,15 @@ mod tests {
     fn empty_collections_round_trip() {
         let empty: Vec<u64> = Vec::new();
         assert_eq!(
-            VariableList::<u64, U8>::decode(&mut &empty.encode()[..]).unwrap().len(),
+            VariableList::<u64, U8>::decode(&mut &empty.encode()[..])
+                .unwrap()
+                .len(),
             0
         );
         assert_eq!(
-            ProgressiveList::<u64>::decode(&mut &empty.encode()[..]).unwrap().len(),
+            ProgressiveList::<u64>::decode(&mut &empty.encode()[..])
+                .unwrap()
+                .len(),
             0
         );
     }

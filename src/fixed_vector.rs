@@ -1,13 +1,13 @@
-use alloc::{format, vec, vec::Vec};
 use crate::tree_hash::vec_tree_hash_root;
 use crate::Error;
-use serde::Deserialize;
-use serde_derive::Serialize;
+use alloc::{format, vec, vec::Vec};
 use core::any::TypeId;
 use core::marker::PhantomData;
 use core::mem;
 use core::ops::{Deref, DerefMut, Index, IndexMut};
 use core::slice::SliceIndex;
+use serde::Deserialize;
+use serde_derive::Serialize;
 use tree_hash::Hash256;
 use typenum::Unsigned;
 

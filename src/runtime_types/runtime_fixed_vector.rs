@@ -2,7 +2,12 @@
 //!
 //! The length of the list cannot be changed once it is set.
 
-use alloc::{format, string::{String, ToString}, vec, vec::Vec};
+use alloc::{
+    format,
+    string::{String, ToString},
+    vec,
+    vec::Vec,
+};
 use core::fmt;
 use core::fmt::Debug;
 

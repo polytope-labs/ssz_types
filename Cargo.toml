@@ -45,9 +45,9 @@ harness = false
 name = "encode_decode"
 
 [patch.crates-io]
-tree_hash = { path = "../tree_hash/tree_hash" }
-tree_hash_derive = { path = "../tree_hash/tree_hash_derive" }
-ethereum_ssz = { path = "../ethereum_ssz/ssz" }
-ethereum_ssz_derive = { path = "../ethereum_ssz/ssz_derive" }
-ethereum_serde_utils = { path = "../ethereum_serde_utils" }
-ethereum_hashing = { path = "../ethereum_hashing" }
+tree_hash = { git = "https://github.com/polytope-labs/tree_hash", rev = "cf99897c1be55eb960eac792c4b51b72f0b92cf1" }
+tree_hash_derive = { git = "https://github.com/polytope-labs/tree_hash", rev = "cf99897c1be55eb960eac792c4b51b72f0b92cf1" }
+ethereum_ssz = { git = "https://github.com/polytope-labs/ethereum_ssz", rev = "928df8a3ed99360bbc18c604e89bf319a9e33e55" }
+ethereum_ssz_derive = { git = "https://github.com/polytope-labs/ethereum_ssz", rev = "928df8a3ed99360bbc18c604e89bf319a9e33e55" }
+ethereum_serde_utils = { git = "https://github.com/polytope-labs/ethereum_serde_utils", rev = "6f4ab738574da2e3a0204bb6d2521c14faee5b32" }
+ethereum_hashing = { git = "https://github.com/polytope-labs/ethereum_hashing", rev = "30d2638547ce44cac0cdea44db32e9247d227a4a" }

@@ -249,7 +249,9 @@ mod tests {
 
         let list = ProgressiveList::<u64>::empty();
         assert_eq!(list.as_ssz_bytes(), Vec::<u8>::new());
-        assert!(ProgressiveList::<u64>::from_ssz_bytes(&[]).unwrap().is_empty());
+        assert!(ProgressiveList::<u64>::from_ssz_bytes(&[])
+            .unwrap()
+            .is_empty());
     }
 
     #[test]
@@ -275,7 +277,9 @@ mod tests {
         let mut hasher_small = ProgressiveMerkleHasher::new();
         let mut hasher_large = ProgressiveMerkleHasher::new();
 
-        let chunks: Vec<Hash256> = (0..10u64).map(|i| Hash256::from(i.tree_hash_root())).collect();
+        let chunks: Vec<Hash256> = (0..10u64)
+            .map(|i| Hash256::from(i.tree_hash_root()))
+            .collect();
 
         for chunk in chunks.iter().take(3) {
             hasher_small.write(chunk.as_slice()).unwrap();
@@ -296,7 +300,10 @@ mod tests {
     #[test]
     fn composite_elements_hash_by_root() {
         // `Hash256` is a vector type, so it takes the non basic branch of the hasher.
-        let list = ProgressiveList::from(alloc::vec![Hash256::repeat_byte(1), Hash256::repeat_byte(2)]);
+        let list = ProgressiveList::from(alloc::vec![
+            Hash256::repeat_byte(1),
+            Hash256::repeat_byte(2)
+        ]);
         let expected = mix_in_length(&progressive_vec_tree_hash_root(&list.vec), 2);
         assert_eq!(list.tree_hash_root(), expected);
     }

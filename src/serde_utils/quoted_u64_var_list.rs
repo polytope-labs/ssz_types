@@ -5,13 +5,13 @@
 //! Quotes can be optional during decoding. If the length of the `Vec` is greater than `N`, deserialization fails.
 
 use alloc::format;
+use core::iter;
+use core::marker::PhantomData;
 use itertools::process_results;
 use serde::ser::SerializeSeq;
 use serde::{de::Error, Deserializer, Serializer};
 use serde_utils::quoted_u64_vec::QuotedIntWrapper;
 use ssz::TryFromIter;
-use core::iter;
-use core::marker::PhantomData;
 
 pub struct QuotedIntVarListVisitor<C> {
     _phantom: PhantomData<C>,
