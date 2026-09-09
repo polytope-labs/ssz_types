@@ -11,20 +11,24 @@ keywords = ["ethereum"]
 categories = ["cryptography::cryptocurrencies"]
 
 [features]
-default = ["ring"]
+default = ["std", "ring"]
+std = ["tree_hash/std", "ethereum_ssz/std", "ethereum_serde_utils/std", "serde/std", "itertools/use_std", "codec?/std"]
 ring = ["tree_hash/ring"]
+sha2 = ["tree_hash/sha2"]
+scale = ["dep:codec"]
 runtime_types = ["dep:educe"]
 context_deserialize = ["dep:context_deserialize"]
 
 [dependencies]
 tree_hash = { version = "0.12.0", default-features = false }
-ethereum_serde_utils = "0.8.0"
-ethereum_ssz = "0.10.0"
-serde = "1.0.0"
+ethereum_serde_utils = { version = "0.8.0", default-features = false }
+ethereum_ssz = { version = "0.10.0", default-features = false }
+serde = { version = "1.0.0", default-features = false, features = ["alloc"] }
 serde_derive = "1.0.0"
-typenum = "1.12.0"
-smallvec = "1.8.0"
-itertools = "0.14.0"
+typenum = { version = "1.12.0", default-features = false }
+codec = { package = "parity-scale-codec", version = "3.2.2", default-features = false, features = ["derive"], optional = true }
+smallvec = { version = "1.8.0", default-features = false }
+itertools = { version = "0.14.0", default-features = false, features = ["use_alloc"] }
 
 # Optional dependencies
 arbitrary = { version = "1.0", features = ["derive"], optional = true }
@@ -39,3 +43,11 @@ tree_hash_derive = "0.12.0"
 [[bench]]
 harness = false
 name = "encode_decode"
+
+[patch.crates-io]
+tree_hash = { git = "https://github.com/polytope-labs/tree_hash", rev = "22d5eb5b5dadf964b0decc0f927101d9294fda2c" }
+tree_hash_derive = { git = "https://github.com/polytope-labs/tree_hash", rev = "22d5eb5b5dadf964b0decc0f927101d9294fda2c" }
+ethereum_ssz = { git = "https://github.com/polytope-labs/ethereum_ssz", rev = "29fca57e449a7e0854369716c39a0db91ee7d826" }
+ethereum_ssz_derive = { git = "https://github.com/polytope-labs/ethereum_ssz", rev = "29fca57e449a7e0854369716c39a0db91ee7d826" }
+ethereum_serde_utils = { git = "https://github.com/polytope-labs/ethereum_serde_utils", rev = "5d953c2f15b1f52c67529b117b4878d946f9295d" }
+ethereum_hashing = { git = "https://github.com/polytope-labs/ethereum_hashing", rev = "7cc907ce12e6dca9c47f44cd92e37eab688c8913" }

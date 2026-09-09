@@ -1,12 +1,13 @@
 use crate::tree_hash::vec_tree_hash_root;
 use crate::Error;
+use alloc::{format, vec, vec::Vec};
+use core::any::TypeId;
+use core::marker::PhantomData;
+use core::mem;
+use core::ops::{Deref, DerefMut, Index, IndexMut};
+use core::slice::SliceIndex;
 use serde::Deserialize;
 use serde_derive::Serialize;
-use std::any::TypeId;
-use std::marker::PhantomData;
-use std::mem;
-use std::ops::{Deref, DerefMut, Index, IndexMut};
-use std::slice::SliceIndex;
 use tree_hash::Hash256;
 use typenum::Unsigned;
 
@@ -63,14 +64,14 @@ impl<T: PartialEq, N> PartialEq for VariableList<T, N> {
     }
 }
 impl<T: Eq, N> Eq for VariableList<T, N> {}
-impl<T: std::hash::Hash, N> std::hash::Hash for VariableList<T, N> {
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+impl<T: core::hash::Hash, N> core::hash::Hash for VariableList<T, N> {
+    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
         self.vec.hash(state);
     }
 }
 
-impl<T: std::fmt::Debug, N> std::fmt::Debug for VariableList<T, N> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+impl<T: core::fmt::Debug, N> core::fmt::Debug for VariableList<T, N> {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         self.vec.fmt(f)
     }
 }
@@ -189,6 +190,12 @@ impl<T, N: Unsigned, I: SliceIndex<[T]>> IndexMut<I> for VariableList<T, N> {
     }
 }
 
+impl<T, N: Unsigned> AsRef<[T]> for VariableList<T, N> {
+    fn as_ref(&self) -> &[T] {
+        &self.vec
+    }
+}
+
 impl<T, N: Unsigned> Deref for VariableList<T, N> {
     type Target = [T];
 
@@ -205,7 +212,7 @@ impl<T, N: Unsigned> DerefMut for VariableList<T, N> {
 
 impl<'a, T, N: Unsigned> IntoIterator for &'a VariableList<T, N> {
     type Item = &'a T;
-    type IntoIter = std::slice::Iter<'a, T>;
+    type IntoIter = core::slice::Iter<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.iter()
@@ -214,7 +221,7 @@ impl<'a, T, N: Unsigned> IntoIterator for &'a VariableList<T, N> {
 
 impl<T, N: Unsigned> IntoIterator for VariableList<T, N> {
     type Item = T;
-    type IntoIter = std::vec::IntoIter<T>;
+    type IntoIter = alloc::vec::IntoIter<T>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.vec.into_iter()
@@ -273,13 +280,13 @@ impl<T, N: Unsigned> ssz::TryFromIter<T> for VariableList<T, N> {
         I: IntoIterator<Item = T>,
     {
         let n = N::to_usize();
-        let clamped_n = std::cmp::min(MAX_ELEMENTS_TO_PRE_ALLOCATE, n);
+        let clamped_n = core::cmp::min(MAX_ELEMENTS_TO_PRE_ALLOCATE, n);
         let iter = value.into_iter();
 
         // Pre-allocate up to `N` elements based on the iterator size hint.
         let (_, opt_max_len) = iter.size_hint();
         let mut l = Self::new(Vec::with_capacity(
-            opt_max_len.map_or(clamped_n, |max_len| std::cmp::min(clamped_n, max_len)),
+            opt_max_len.map_or(clamped_n, |max_len| core::cmp::min(clamped_n, max_len)),
         ))?;
         for item in iter {
             l.push(item)?;
@@ -483,7 +490,7 @@ mod test {
         assert_eq!(<VariableList<u16, U2> as Encode>::ssz_fixed_len(), 4);
     }
 
-    fn ssz_round_trip<T: Encode + Decode + std::fmt::Debug + PartialEq>(item: T) {
+    fn ssz_round_trip<T: Encode + Decode + core::fmt::Debug + PartialEq>(item: T) {
         let encoded = &item.as_ssz_bytes();
         assert_eq!(item.ssz_bytes_len(), encoded.len());
         assert_eq!(T::from_ssz_bytes(encoded), Ok(item));
@@ -671,7 +678,6 @@ mod test {
 
     #[test]
     fn large_list_pre_allocation() {
-        use std::iter;
         use typenum::U1099511627776;
 
         // Iterator that hints the upper bound on its length as `hint`.
@@ -699,7 +705,7 @@ mod test {
         type N = U1099511627776;
         type List = VariableList<u64, N>;
 
-        let iter = iter::repeat(1).take(5);
+        let iter = core::iter::repeat_n(1, 5);
         let wonky_iter = WonkyIterator {
             hint: N::to_usize() / 2,
             iter: iter.clone(),
@@ -752,6 +758,7 @@ mod test {
 
     // This tests the `From<Infallible>` impl for `Error`.
     #[test]
+    #[allow(clippy::unnecessary_fallible_conversions)] // the fallible path is what is under test
     fn error_from_infallible() {
         let result: Result<Vec<u64>, Error> =
             Vec::try_from(VariableList::<u64, U5>::repeat_full(6)).map_err(Into::into);
