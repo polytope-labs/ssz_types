@@ -49,8 +49,6 @@ pub mod length {
 #[macro_use]
 mod fixed_vector;
 mod progressive_list;
-#[cfg(feature = "scale")]
-mod scale;
 mod tree_hash;
 mod variable_list;
 

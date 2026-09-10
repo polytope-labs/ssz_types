@@ -12,10 +12,9 @@ categories = ["cryptography::cryptocurrencies"]
 
 [features]
 default = ["std", "ring"]
-std = ["tree_hash/std", "ethereum_ssz/std", "ethereum_serde_utils/std", "serde/std", "itertools/use_std", "codec?/std"]
+std = ["tree_hash/std", "ethereum_ssz/std", "ethereum_serde_utils/std", "serde/std", "itertools/use_std"]
 ring = ["tree_hash/ring"]
 sha2 = ["tree_hash/sha2"]
-scale = ["dep:codec"]
 runtime_types = ["dep:educe"]
 context_deserialize = ["dep:context_deserialize"]
 
@@ -26,7 +25,6 @@ ethereum_ssz = { version = "0.10.0", default-features = false }
 serde = { version = "1.0.0", default-features = false, features = ["alloc"] }
 serde_derive = "1.0.0"
 typenum = { version = "1.12.0", default-features = false }
-codec = { package = "parity-scale-codec", version = "3.2.2", default-features = false, features = ["derive"], optional = true }
 smallvec = { version = "1.8.0", default-features = false }
 itertools = { version = "0.14.0", default-features = false, features = ["use_alloc"] }
 
